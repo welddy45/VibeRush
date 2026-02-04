@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Rush | Политика конфиденциальности</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #2D98DA;
+            --accent: #FFDD2D;
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
+            --glass: blur(15px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.8; }
+
+        /* Навигация */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 8%; position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(5, 5, 5, 0.5); backdrop-filter: var(--glass); border-bottom: 1px solid var(--border);
+        }
+        .logo img { height: 40px; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { text-decoration: none; color: var(--text-dim); font-size: 0.85rem; font-weight: 600; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Контент */
+        .policy-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 150px 20px 100px;
+        }
+
+        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 40px; color: var(--primary); text-align: center; }
+
+        .policy-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: var(--glass);
+        }
+
+        .policy-item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .policy-item:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .policy-num {
+            display: inline-block;
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .policy-text {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+        }
+
+        .important {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        footer { padding: 60px 8%; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            h1 { font-size: 1.8rem; }
+            .policy-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">
+            <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/c627bfd3-f6de-41b4-939a-6abc2188184f/c627bfd3-f6de-41b4-939a-6abc2188184f-13792320.png" alt="Vibe Rush">
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Главная</a>
+            <a href="pokupka.html">Магазин</a>
+            <a href="pravila.html">Правила</a>
+            <a href="wiki.html">Wiki</a>
+            <a href="https://t.me/viberushmc">Telegram</a>
+        </div>
+    </nav>
+
+    <main class="policy-wrapper">
+        <h1>Политика конфиденциальности</h1>
+        
+        <div class="policy-card">
+            <div class="policy-item">
+                <span class="policy-num">01.</span>
+                <p class="policy-text">
+                    Все пользователи при совершении покупок на данном сайте автоматически дают <span class="important">согласие на невозврат денежных средств</span> за любые приобретенные товары. Это правило действует в том числе при закрытии проекта или его банкротстве. Мы не несём ответственности за ваши средства в данных случаях.
+                </p>
+            </div>
+
+            <div class="policy-item">
+                <span class="policy-num">02.</span>
+                <p class="policy-text">
+                    В случае нарушения правил проекта и последующей блокировки вашего аккаунта, администрация <span class="important">не несёт ответственности за ваши средства</span>. В случае бана денежные средства за покупки не возвращаются.
+                </p>
+            </div>
+
+            <div class="policy-item">
+                <span class="policy-num">03.</span>
+                <p class="policy-text">
+                    Правила проекта могут быть изменены в любое время без предварительного уведомления. <span class="important">Незнание правил не освобождает вас от ответственности</span>. Если нарушение произошло до момента официального внесения изменений в текст правил, пользователь всё равно может быть привлечен к ответственности.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div>Vibe Rush 2026® — Юридическая информация</div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
