@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Rush | Официальный Кодекс</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #2D98DA;
+            --accent: #FFDD2D;
+            --danger: #ff4a4a;
+            --success: #44ff44;
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
+            --glass: blur(15px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-y: scroll; }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 8%; position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(5, 5, 5, 0.5); backdrop-filter: var(--glass); border-bottom: 1px solid var(--border);
+        }
+        .logo img { height: 40px; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { text-decoration: none; color: var(--text-dim); font-size: 0.85rem; font-weight: 600; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .search-section {
+            padding: 150px 8% 40px;
+            background: radial-gradient(circle at top right, rgba(45, 152, 218, 0.05), transparent);
+            text-align: center;
+        }
+        .search-container { max-width: 600px; margin: 20px auto; position: relative; }
+        .search-input {
+            width: 100%; background: var(--surface); border: 1px solid var(--border);
+            padding: 18px 25px 18px 55px; border-radius: 15px; color: white;
+            font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(45, 152, 218, 0.1); }
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-dim); }
+
+        .rules-wrapper { max-width: 1000px; margin: 0 auto 100px; padding: 0 20px; }
+
+        /* Плавный Аккордеон */
+        .chapter {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+        .chapter-header {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .chapter-header h2 { font-size: 1.3rem; display: flex; align-items: center; gap: 15px; font-weight: 800; }
+        .chapter-header i.chevron { transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); color: var(--text-dim); }
+        
+        .chapter-content-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .chapter.active .chapter-content-wrapper { grid-template-rows: 1fr; }
+        .chapter.active { border-color: var(--primary); background: rgba(255,255,255,0.05); }
+        .chapter.active i.chevron { transform: rotate(180deg); color: var(--primary); }
+
+        .chapter-content { overflow: hidden; }
+        .chapter-inner { padding: 0 25px 30px; }
+
+        /* Правила */
+        .rule-item {
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .rule-item:last-child { border: none; }
+        .rule-top { display: flex; gap: 15px; align-items: flex-start; }
+        .rule-num { color: var(--primary); font-weight: 800; font-size: 0.9rem; min-width: 35px; padding-top: 2px; }
+        .rule-text { color: var(--text); font-size: 1rem; font-weight: 500; }
+        
+        .status-tag {
+            display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+        }
+        .forbidden { color: var(--danger); }
+        .required { color: var(--success); }
+        .info-tag { color: var(--primary); }
+
+        .punishment {
+            margin-left: 50px;
+            font-size: 0.8rem;
+            color: var(--danger);
+            font-weight: 700;
+            background: rgba(255, 74, 74, 0.08);
+            padding: 6px 14px;
+            border-radius: 8px;
+            width: fit-content;
+            border: 1px solid rgba(255, 74, 74, 0.2);
+        }
+
+        .note-box {
+            background: rgba(255, 221, 45, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.95rem;
+        }
+
+        mark { background: var(--accent); color: black; border-radius: 4px; padding: 0 4px; }
+        .no-results { text-align: center; padding: 50px; display: none; color: var(--text-dim); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .chapter-header h2 { font-size: 1rem; }
+            .rule-top { gap: 10px; }
+            .punishment { margin-left: 0; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">
+            <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/c627bfd3-f6de-41b4-939a-6abc2188184f/c627bfd3-f6de-41b4-939a-6abc2188184f-13792320.png" alt="Vibe Rush">
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Главная</a>
+            <a href="https://viberush.tilda.ws">Магазин</a>
+            <a href="pravila.html">Правила</a>
+            <a href="wiki.html">Wiki</a>
+            <a href="https://t.me/viberushmc">Telegram</a>
+        </div>
+    </nav>
+
+    <section class="search-section">
+        <h1>КОДЕКС VIBE RUSH</h1>
+        <div class="search-container">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" class="search-input" id="rulesSearch" placeholder="Поиск (например: читы, njn, мадератор)...">
+        </div>
+    </section>
+
+    <main class="rules-wrapper" id="rulesContainer">
+        
+        <!-- ГЛАВА 1 -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="book-open"></i> 1. Основные правила</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="note-box">
+                            <strong>1.1</strong> Незнание правил не освобождает Вас от ответственности.<br>
+                            <strong>1.2</strong> Начав играть, вы автоматически подтверждаете согласие с правилами.
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.3</span><span class="rule-text">Руководство может поменять правила в любое время.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.4</span><span class="rule-text">Руководство вправе наказать игрока по причине, не указанной в настоящих правилах.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.5</span><span class="rule-text">Администрация не несёт ответственности за невозможность игры конкретным лицом или группой лиц.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.6</span><span class="rule-text">Администрация имеет право корректировать данный свод правил без уведомления игрока.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.7</span><span class="rule-text">Команда проекта ведет логи всех действий игроков и всех сообщений чата.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.8</span><span class="rule-text">Ответственность несёт владелец аккаунта, независимо от того, кто совершал действия.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.9</span><span class="rule-text">При потере вещей из-за ошибки сервера, возврат ресурсов возможен только при наличии доказательств.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.10</span><span class="rule-text">Потраченные средства не будут возвращены ни при каких обстоятельствах.</span></div>
+                            <div class="punishment">Средства возврату не подлежат</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 2 -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="swords"></i> 2. Игровые правила</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.1</span><span class="rule-text">Передача аккаунта третьим лицам.</span></div>
+                            <div class="punishment">Наказание на усмотрение администрации</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.2</span><span class="rule-text">Иметь более 3-х аккаунтов.</span></div>
+                            <div class="punishment">Бан всех аккаунтов</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.3</span><span class="rule-text">Нанесение вреда серверу / создание лагов / багоюз.</span></div>
+                            <div class="punishment">Бан от 1 до 365 дней</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.4</span><span class="rule-text">Использовать игровые баги, дюпы, дюпанные ресурсы, баги с ценами.</span></div>
+                            <div class="punishment">Наказание на усмотрение администрации</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.5</span><span class="rule-text">Игра со сторонними модами/ресурспаками, дающими игровое преимущество.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.5.1</span><span class="rule-text">Ливать с проверки, игнорировать проверяющего, вставать в АФК, отказ от проверки или признание.</span></div>
+                            <div class="punishment">Бан от 14 до 30 дней</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.5.2</span><span class="rule-text">Использование любых читов.</span></div>
+                            <div class="punishment">Бан от 14 до 30 дней</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.5.3</span><span class="rule-text">Использование модификаций из определённого списка.</span></div>
+                            <div class="punishment">Бан от 1 до 30 дней</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.5.4</span><span class="rule-text">Игра с читером / укрывательство читера.</span></div>
+                            <div class="punishment">Бан от 1 до 14 дней</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.6</span><span class="rule-text">Продажа / покупка / попытка продажи ресурсов или аккаунтов за реальные деньги.</span></div>
+                            <div class="punishment">Наказание на усмотрение администрации</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">2.7</span><span class="rule-text">Материться / оскорблять / оффтопить / оскорблять проект в /report.</span></div>
+                            <div class="punishment">Мут от 60 мин до 24 часов</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">115</span><span class="rule-text">Проводить транзакции с EDU COIN через игроков с другим уровнем скупки.</span></div>
+                            <div class="punishment">Бан до 30 дней</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 3 -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="message-circle"></i> 3. Правила чата</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.1</span><span class="rule-text">Спам / флуд в чатах.</span></div>
+                            <div class="punishment">Мут от 30 до 120 минут</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.2</span><span class="rule-text">Провокация игроков на нарушение правил.</span></div>
+                            <div class="punishment">Мут от 30 мин до 2 часов</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.3</span><span class="rule-text">Оскорбления игроков в большом количестве.</span></div>
+                            <div class="punishment">Мут от 15 до 60 минут</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.4</span><span class="rule-text">Упоминания сторонних ресурсов / серверов / читов.</span></div>
+                            <div class="punishment">Мут от 30 мин до 3 часов</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.4.1</span><span class="rule-text">Реклама сторонних ресурсов.</span></div>
+                            <div class="punishment">Наказание на усмотрение администрации</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.4.2</span><span class="rule-text">Оскорбления в сторону проекта Vibe Rush.</span></div>
+                            <div class="punishment">Мут 60 мин / Бан 1 день</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.5</span><span class="rule-text">Любой розжиг межнациональной розни, обсуждение политики, расизм.</span></div>
+                            <div class="punishment">Мут 2-5 ч / Рецидив: Бан 1-3 дня</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.6</span><span class="rule-text">Пропаганда фашизма / нацизма в любой форме.</span></div>
+                            <div class="punishment">Мут от 1 до 8 часов</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.7</span><span class="rule-text">Затрагивать духовную ценность игрока / религии.</span></div>
+                            <div class="punishment">Мут от 240 мин до 1 дня</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.8</span><span class="rule-text">Оскорбления / унижения администрации сервера.</span></div>
+                            <div class="punishment">Мут 120 мин / Бан 1 день</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.9</span><span class="rule-text">Упоминание родных игрока / персонала в оскорбительной форме.</span></div>
+                            <div class="punishment">Мут 2 ч / Бан до 7 дней</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.10</span><span class="rule-text">Критиковать работу персонала, цитировать обязанности и провоцировать на нарушения.</span></div>
+                            <div class="punishment">Мут от 30 мин до 8 часов</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.11</span><span class="rule-text">Угроза нарушения работоспособности сервера.</span></div>
+                            <div class="punishment">Мут 360 мин / Бан 1 день</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.12</span><span class="rule-text">Выдача себя за администрацию.</span></div>
+                            <div class="punishment">Бан от 1 часа до 2 дней</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">3.13</span><span class="rule-text">Многократное нарушение правил чата (от 4 пунктов).</span></div>
+                            <div class="punishment">Мут 2 ч / Бан до 7 дней</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 4 -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="home"></i> 4. Правила имущества</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">4.1</span><span class="rule-text">Ставить сумму ставки на аукционе выше, чем имеется на аккаунте.</span></div>
+                            <div class="punishment">Наказание на усмотрение администрации</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">4.2</span><span class="rule-text">Для передачи / обмена / продажи имущества нужно обратиться к Администрации.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag info-tag"><i data-lucide="info"></i> Информация</div>
+                            <div class="rule-top"><span class="rule-num">4.3</span><span class="rule-text">Если вы оффлайн более 10 дней, администрация вправе выставить ваше имущество на аукцион.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag info-tag"><i data-lucide="info"></i> Информация</div>
+                            <div class="rule-top"><span class="rule-num">4.4</span><span class="rule-text">Администрация может конфисковать ваше имущество за нарушение правил сервера.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 5: АДМИНЫ -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="shield"></i> 5. Правила Администрации</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.0</span><span class="rule-text">Хелперы — младшие члены команды. Могут наказывать только при наличии всех доказательств.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">1.1</span><span class="rule-text">Хелпер обязан быть грамотным, воспитанным и толерантным.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">1.2</span><span class="rule-text">Хелпер обязан соблюдать цензуру и речевые нормы.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">1.3</span><span class="rule-text">Хелпер обязан всегда делать скриншоты нарушения (предоставлять игрокам не обязан).</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">1.4</span><span class="rule-text">Хелпер обязан уметь давать отчет своим действиям любому из членов администрации.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">1.5</span><span class="rule-text">Основная обязанность — контролировать процесс и предотвращать инциденты.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">1.6</span><span class="rule-text">Хелпер обязан исполнять указания администрации вовремя.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.7</span><span class="rule-text">Наносить ущерб / урон игроку без необходимости.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.8</span><span class="rule-text">Блокировать / мешать / телепортировать / кикать игроков без серьезной причины.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.9</span><span class="rule-text">Злоупотреблять правами в пользу себя, друзей или третьих лиц.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.10</span><span class="rule-text">Устраивать торговлю или снабжать игроков ресурсами, добытыми через админ-права.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.11</span><span class="rule-text">Вносить раздор в коллектив и вести себя неадекватно даже вне проекта.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.12</span><span class="rule-text">Разглашать содержание админ-конференций и личных переговоров.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.13</span><span class="rule-text">Выгораживать проступки любых игроков и модераторов.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.14</span><span class="rule-text">Изменять стандартный префикс должности.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.15</span><span class="rule-text">Хранить ресурсы, полученные с помощью бага или дюпа.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.16</span><span class="rule-text">Отсутствие более 5 дней без уважительной причины или низкий онлайн — основание для снятия.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.17</span><span class="rule-text">За нарушение любого правила — варн или снятие.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 6: АДМИН-СОСТАВ -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="users"></i> 6. Административный состав</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.1</span><span class="rule-text">Принимать меры к ликвидации конфликтов и рассматривать претензии.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.2</span><span class="rule-text">Фиксировать доказательства нарушений (скриншоты/видео).</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.3</span><span class="rule-text">Выполнять отдельные служебные поручения руководства сервера.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.4</span><span class="rule-text">Обеспечивать эффективное и культурное обслуживание игроков.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.5</span><span class="rule-text">Принимать максимально объективную сторону в ходе выдачи наказания.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.6</span><span class="rule-text">Проявлять активность не менее 3-х дней в неделю.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.7</span><span class="rule-text">Информировать руководство об имеющихся недостатках в работе сервера.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.8</span><span class="rule-text">Подробно расписывать игроку причину наказания и проводить беседу.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">2.9</span><span class="rule-text">Контроль над модераторами и наказание их за превышение полномочий.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 7: СТАРШИЙ СОСТАВ -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="crown"></i> 7. Старший состав</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="note-box">
+                            Включает: Главного Администратора, Зам. Гл. Администратора, Владельца.
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">3.1</span><span class="rule-text">Сбор информации о деятельности админов, подсчет активности, выдача наказаний/повышений.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">3.2</span><span class="rule-text">Выдача и контроль исполнения задач разделами проекта.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">3.3</span><span class="rule-text">Корректировка поведения команды в интересах проекта.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">3.4</span><span class="rule-text">Разбор спорных вопросов, которые не может решить администрация.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">3.5</span><span class="rule-text">Выдача задач администраторам.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">3.6</span><span class="rule-text">Принимать максимально объективную сторону в ходе выдачи наказания.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">3.7</span><span class="rule-text">Выполнять отдельные служебные поручения от состава старшей администрации.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">3.8</span><span class="rule-text">Контроль соблюдения правил администрацией и игроками.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 8: ТЕХНИЧЕСКИЙ СОСТАВ -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="cpu"></i> 8. Технический состав</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">4.0</span><span class="rule-text">Занимаются исключительно технической частью. Взаимодействие только по тех-вопросам.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">4.0.1</span><span class="rule-text">Влезать в игру или работу административной команды без просьбы старших.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">4.1</span><span class="rule-text">Выполнение технических заданий от старшей администрации (приоритетно).</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">4.2</span><span class="rule-text">Консультировать игроков по вопросам услуг и проводимых акций.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">4.3</span><span class="rule-text">Помощь в реализации ивентов (если необходимо).</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">4.4</span><span class="rule-text">Отслеживание нарушений: дюпы и использование уязвимостей.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 9: БИЛДЕРЫ -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="hammer"></i> 9. Билдерский состав</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">5.0</span><span class="rule-text">Занимаются наполнением карты, созданием ивентов и локаций.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">5.1</span><span class="rule-text">Выполнять задачи от главы билдеров и старшей администрации.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">5.2</span><span class="rule-text">Соблюдать свой регламент.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">5.3</span><span class="rule-text">Подобающе вести себя во время нахождения на сервере.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">5.4</span><span class="rule-text">Использовать креатив в своих интересах.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">5.5</span><span class="rule-text">Выполнять поставленные задачи от главы билдеров и старшей администрации.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">5.6</span><span class="rule-text">Соблюдать свой регламент.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">5.7</span><span class="rule-text">Пользоваться командой //set или ставить структуры без разрешения.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag required"><i data-lucide="check-circle"></i> Обязанность</div>
+                            <div class="rule-top"><span class="rule-num">5.8</span><span class="rule-text">Подобающе вести себя во время нахождения на сервере.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">5.9</span><span class="rule-text">Действия, повлекшие рестарт или активацию бекапа.</span></div>
+                            <div class="punishment">Строго наказуемо</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">5.10</span><span class="rule-text">Использовать креатив в своих интересах.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 10: СИСТЕМА НАКАЗАНИЙ -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="alert-octagon"></i> 10. Система наказаний</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="note-box">
+                            При достижении 3-х варнов сотрудник снимается с должности с закрытием доступа в команду.
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">УСТНЫЙ</span><span class="rule-text">Предупреждение в текстовом виде от Владельца или ГА.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">ВАРН</span><span class="rule-text">Основная единица счета. 3 варна = Снятие.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">ПОНИЖЕНИЕ</span><span class="rule-text">Обратное движение по должностной лестнице. Бывает временным и постоянным.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">СНЯТИЕ</span><span class="rule-text">Возможно за отсутствие более 5 дней без причины или низкий онлайн.</span></div>
+                        </div>
+                        <div class="note-box">
+                            <strong>Снятие варнов:</strong> Возможно путем повышенной инициативной деятельности и постоянных отчетов о своей активности.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ГЛАВА 11: ПАРТНЕРЫ -->
+        <div class="chapter">
+            <div class="chapter-header">
+                <h2><i data-lucide="share-2"></i> 11. Правила интеграции</h2>
+                <i data-lucide="chevron-down" class="chevron"></i>
+            </div>
+            <div class="chapter-content-wrapper">
+                <div class="chapter-content">
+                    <div class="chapter-inner">
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.1</span><span class="rule-text">Вы получаете 50% с доната игрока, который ввел ваш промокод.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.2</span><span class="rule-text">Принимаем все ютуб каналы/группы/сайты.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="status-tag forbidden"><i data-lucide="x-circle"></i> Запрещено</div>
+                            <div class="rule-top"><span class="rule-num">1.3</span><span class="rule-text">Топ-10 донатеров проекта не могут участвовать в акции.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.4</span><span class="rule-text">Вывод средств: СБП, Карты РФ, DonationAlerts. Только в рублях.</span></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-top"><span class="rule-num">1.5</span><span class="rule-text">Вывод осуществляется только в Рублях.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults">Ничего не найдено. Попробуйте изменить запрос.</div>
+    </main>
+
+    <footer>
+        <div>Vibe Rush 2026® — Порядок и Вайб</div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Раскладка
+        const layoutMap = {
+            'q':'й', 'w':'ц', 'e':'у', 'r':'к', 't':'е', 'y':'н', 'u':'г', 'i':'ш', 'o':'щ', 'p':'з', '[':'х', ']':'ъ',
+            'a':'ф', 's':'ы', 'd':'в', 'f':'а', 'g':'п', 'h':'р', 'j':'о', 'k':'л', 'l':'д', ';':'ж', "'":'э',
+            'z':'я', 'x':'ч', 'c':'с', 'v':'м', 'b':'и', 'n':'т', 'm':'ь', ',':'б', '.':'ю'
+        };
+
+        function fixLayout(str) {
+            return str.split('').map(char => layoutMap[char.toLowerCase()] || char).join('');
+        }
+
+        // Аккордеон
+        document.querySelectorAll('.chapter-header').forEach(header => {
+            header.addEventListener('click', () => {
+                header.parentElement.classList.toggle('active');
+            });
+        });
+
+        // Поиск
+        const searchInput = document.getElementById('rulesSearch');
+        const chapters = document.querySelectorAll('.chapter');
+        const ruleItems = document.querySelectorAll('.rule-item');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const fixedQuery = fixLayout(query);
+            let hasAnyMatch = false;
+
+            if (query.length < 2) {
+                chapters.forEach(c => {
+                    c.style.display = 'block';
+                    c.classList.remove('active');
+                });
+                ruleItems.forEach(r => r.style.display = 'flex');
+                noResults.style.display = 'none';
+                return;
+            }
+
+            chapters.forEach(chapter => {
+                let chapterMatch = false;
+                const items = chapter.querySelectorAll('.rule-item');
+                
+                items.forEach(item => {
+                    const text = item.innerText.toLowerCase();
+                    if (text.includes(query) || text.includes(fixedQuery)) {
+                        item.style.display = 'flex';
+                        chapterMatch = true;
+                        hasAnyMatch = true;
+                        
+                        // Подсветка
+                        const textNode = item.querySelector('.rule-text');
+                        if(!textNode.dataset.orig) textNode.dataset.orig = textNode.innerHTML;
+                        const regex = new RegExp(`(${query}|${fixedQuery})`, 'gi');
+                        textNode.innerHTML = textNode.dataset.orig.replace(regex, '<mark>$1</mark>');
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                if (chapterMatch) {
+                    chapter.style.display = 'block';
+                    chapter.classList.add('active');
+                } else {
+                    chapter.style.display = 'none';
+                    chapter.classList.remove('active');
+                }
+            });
+
+            noResults.style.display = hasAnyMatch ? 'none' : 'block';
+        });
+    </script>
+</body>
+</html>
