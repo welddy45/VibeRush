@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Rush | Wiki 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --wiki-card-bg: rgba(255, 255, 255, 0.03);
+            --wiki-accent: #00f2ff;
+        }
+
+        .wiki-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            padding-top: 40px;
+            position: relative;
+        }
+
+        /* --- SIDEBAR --- */
+        .wiki-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            max-height: calc(100vh - 120px);
+            background: var(--bg-card);
+            border: var(--border-light);
+            border-radius: 24px;
+            padding: 24px;
+            backdrop-filter: var(--glass-blur);
+            overflow-y: auto;
+        }
+
+        .wiki-sidebar::-webkit-scrollbar { width: 4px; }
+        .wiki-sidebar::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
+
+        .sidebar-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .side-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: all 0.3s var(--ease);
+            margin-bottom: 5px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .side-nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .side-nav-link.active {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--wiki-accent);
+            border-color: rgba(0, 242, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.05);
+        }
+
+        /* --- SEARCH --- */
+        .search-container {
+            position: relative;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--bg-card);
+            border: var(--border-light);
+            padding: 22px 30px 22px 65px;
+            border-radius: 20px;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            transition: 0.3s;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--wiki-accent);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+            background: rgba(25, 25, 30, 0.9);
+        }
+
+        .search-icon-svg {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--wiki-accent);
+            opacity: 0.7;
+        }
+
+        /* --- CONTENT CARDS --- */
+        .wiki-section {
+            margin-bottom: 80px;
+            scroll-margin-top: 120px;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .section-header-wiki {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .section-header-wiki h2 {
+            font-size: 2rem;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .wiki-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .wiki-card {
+            background: var(--wiki-card-bg);
+            border: var(--border-light);
+            border-radius: 24px;
+            padding: 25px;
+            display: flex;
+            gap: 25px;
+            transition: all 0.4s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wiki-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--wiki-accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .wiki-card::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 100px; height: 100px;
+            background: radial-gradient(circle at top right, rgba(0, 242, 255, 0.05), transparent);
+            pointer-events: none;
+        }
+
+        .wiki-img-box {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .wiki-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .wiki-card:hover .wiki-img-box img { transform: scale(1.1); }
+
+        .wiki-info { display: flex; flex-direction: column; }
+
+        .wiki-tag {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .wiki-item-title {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 10px;
+            font-family: var(--font-head);
+        }
+
+        .wiki-item-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* --- SCROLL TO TOP --- */
+        .btn-up {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--wiki-accent);
+            color: #000;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 242, 255, 0.3);
+        }
+
+        .btn-up.visible { opacity: 1; visibility: visible; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1100px) {
+            .wiki-container { grid-template-columns: 1fr; }
+            .wiki-sidebar {
+                position: relative;
+                top: 0;
+                display: flex;
+                overflow-x: auto;
+                max-width: 100%;
+                gap: 10px;
+                padding: 10px;
+                background: transparent;
+                border: none;
+            }
+            .sidebar-title { display: none; }
+            .side-nav-link { white-space: nowrap; padding: 10px 20px; }
+        }
+
+        @media (max-width: 768px) {
+            .wiki-grid { grid-template-columns: 1fr; }
+            .wiki-card { flex-direction: column; }
+            .wiki-img-box { width: 100%; height: 200px; }
+            .page-title { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-wrapper">
+            <a href="index.html" class="logo">
+                <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/c627bfd3-f6de-41b4-939a-6abc2188184f/c627bfd3-f6de-41b4-939a-6abc2188184f-13792320.png" alt="Vibe Rush">
+                <span>VIBE RUSH</span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="shop.html" class="nav-link">Магазин</a>
+                <a href="pravila.html" class="nav-link">Правила</a>
+                <a href="wiki.html" class="nav-link active">Wiki</a>
+                <a href="https://discord.gg/JB368EmZmq" target="_blank" class="nav-link">Discord</a>
+            </nav>
+            <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">БАЗА ЗНАНИЙ</h1>
+            <p class="section-subtitle">Всё о механиках, боссах и секретах сервера Vibe Rush</p>
+        </div>
+    </section>
+
+    <main class="container wiki-container">
+        <!-- Sidebar Navigation -->
+        <aside class="wiki-sidebar">
+            <div class="sidebar-title">Категории</div>
+            <div id="sideNav">
+                <!-- Категории рендерятся из JS -->
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="wiki-main">
+            <div class="search-container">
+                <svg class="search-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="wikiSearch" class="search-input" placeholder="Найти информацию..." oninput="handleSearch()">
+            </div>
+
+            <div id="wikiRenderBody">
+                <!-- Сюда рендерятся карточки из wiki.json -->
+                <div class="status-badge" style="margin-top: 20px;">Подключение к архивам данных...</div>
+            </div>
+        </div>
+    </main>
+
+    <div class="btn-up" id="btnUp" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/b8ccdd8f-e1a5-42bb-8ffb-72065970d99d/b8ccdd8f-e1a5-42bb-8ffb-72065970d99d-13792321.png" alt="Logo">
+                    <span>VIBE RUSH</span>
+                </div>
+                <div class="footer-links">
+                    <a href="pravila.html">Правила</a>
+                    <a href="privacy-policy.html">Политика</a>
+                    <a href="wiki.html">Wiki</a>
+                    <a href="shop.html">Магазин</a>
+                </div>
+            </div>
+            <div class="copyright">&copy; 2026 Vibe Rush Server.</div>
+        </div>
+    </footer>
+
+    <script>
+        let fullWikiData = [];
+
+        async function initWiki() {
+            try {
+                const res = await fetch('wiki.json');
+                const data = await res.json();
+                fullWikiData = data.categories;
+                
+                renderSidebar();
+                renderContent();
+                initScrollSpy();
+            } catch (err) {
+                console.error("Wiki Data Error:", err);
+                document.getElementById('wikiRenderBody').innerHTML = "<p style='color:var(--danger)'>Ошибка: Не удалось загрузить wiki.json</p>";
+            }
+        }
+
+        function renderSidebar() {
+            const sideNav = document.getElementById('sideNav');
+            sideNav.innerHTML = fullWikiData.map((cat, index) => `
+                <div class="side-nav-link ${index === 0 ? 'active' : ''}" 
+                     onclick="scrollToCat('${cat.id}', this)">
+                    <span style="font-size: 1.2rem;">${cat.icon}</span>
+                    <span>${cat.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderContent(searchQuery = '') {
+            const container = document.getElementById('wikiRenderBody');
+            container.innerHTML = '';
+
+            fullWikiData.forEach(cat => {
+                const filtered = cat.items.filter(item => 
+                    item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    item.description.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+
+                if (filtered.length > 0) {
+                    const section = document.createElement('div');
+                    section.className = 'wiki-section';
+                    section.id = cat.id;
+
+                    section.innerHTML = `
+                        <div class="section-header-wiki">
+                            <span style="font-size: 2rem;">${cat.icon}</span>
+                            <h2>${cat.name}</h2>
+                        </div>
+                        <div class="wiki-grid">
+                            ${filtered.map(item => `
+                                <div class="wiki-card">
+                                    <div class="wiki-img-box">
+                                        <img src="${item.image}" alt="${item.title}" loading="lazy">
+                                    </div>
+                                    <div class="wiki-info">
+                                        <span class="wiki-tag">${item.label}</span>
+                                        <h4 class="wiki-item-title">${item.title}</h4>
+                                        <p class="wiki-item-text">${item.description}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    container.appendChild(section);
+                }
+            });
+
+            if(container.innerHTML === '') {
+                container.innerHTML = '<div class="status-badge">Ничего не найдено по вашему запросу...</div>';
+            }
+        }
+
+        function handleSearch() {
+            const q = document.getElementById('wikiSearch').value;
+            renderContent(q);
+        }
+
+        function scrollToCat(id, el) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            document.querySelectorAll('.side-nav-link').forEach(l => l.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // ScrollSpy - подсвечивает категорию при скролле
+        function initScrollSpy() {
+            window.addEventListener('scroll', () => {
+                const sections = document.querySelectorAll('.wiki-section');
+                const navLinks = document.querySelectorAll('.side-nav-link');
+                const btnUp = document.getElementById('btnUp');
+
+                // Кнопка наверх
+                if (window.scrollY > 500) btnUp.classList.add('visible');
+                else btnUp.classList.remove('visible');
+
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('onclick').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', initWiki);
+    </script>
+</body>
+</html>
