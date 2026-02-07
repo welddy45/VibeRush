@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Rush | Магазин контента 2026</title>
+    <meta name="description" content="Официальный магазин сервера Vibe Rush. Привилегии, личные миры и уникальные кейсы.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Jost:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/63398923-e702-4556-9e03-8d52243a3297/63398923-e702-4556-9e03-8d52243a3297-13789880.png">
+
+    <style>
+        .shop-filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.3s var(--ease);
+            text-transform: uppercase;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #000;
+            box-shadow: 0 0 20px rgba(45, 152, 218, 0.3);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: var(--border-light);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s var(--ease);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .discount-label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--danger);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            z-index: 5;
+        }
+
+        .badge-label {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--gold);
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            z-index: 5;
+            text-transform: uppercase;
+        }
+
+        .product-img-wrp {
+            width: 100%;
+            aspect-ratio: 16/10;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .product-img-wrp img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .product-card:hover .product-img-wrp img {
+            transform: scale(1.08);
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .product-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .product-price-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .price-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-old {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-bottom: -2px;
+        }
+
+        .price-new {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            font-family: var(--font-head);
+        }
+
+        .buy-action {
+            padding: 10px 20px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-title { font-size: 2.5rem; }
+            .products-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-wrapper">
+            <a href="index.html" class="logo">
+                <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/c627bfd3-f6de-41b4-939a-6abc2188184f/c627bfd3-f6de-41b4-939a-6abc2188184f-13792320.png" alt="Vibe Rush">
+                <span>VIBE RUSH</span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="shop.html" class="nav-link active">Магазин</a>
+                <a href="pravila.html" class="nav-link">Правила</a>
+                <a href="wiki.html" class="nav-link">Wiki</a>
+                <a href="https://discord.gg/JB368EmZmq" target="_blank" class="nav-link">Discord</a>
+            </nav>
+            <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">МАГАЗИН ТОВАРОВ</h1>
+            <p class="section-subtitle">Выбирай лучшее снаряжение и статусы для комфортной игры</p>
+        </div>
+    </section>
+
+    <main class="container" style="padding-bottom: 100px;">
+        
+        <div class="shop-filter-bar">
+            <button class="filter-btn active" onclick="filterShop('all')">Все</button>
+            <button class="filter-btn" onclick="filterShop('ranks')">Привилегии</button>
+            <button class="filter-btn" onclick="filterShop('worlds')">Миры</button>
+            <button class="filter-btn" onclick="filterShop('cases')">Кейсы</button>
+            <button class="filter-btn" onclick="filterShop('passes')">Пропуски</button>
+            <button class="filter-btn" onclick="filterShop('items')">Предметы</button>
+        </div>
+
+        <div class="products-grid" id="shopGrid">
+            <!-- Динамическая отрисовка JS -->
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/b8ccdd8f-e1a5-42bb-8ffb-72065970d99d/b8ccdd8f-e1a5-42bb-8ffb-72065970d99d-13792321.png" alt="Logo">
+                    <span>VIBE RUSH</span>
+                </div>
+                <div class="footer-links">
+                    <a href="pravila.html">Правила</a>
+                    <a href="privacy-policy.html">Политика</a>
+                    <a href="wiki.html">Wiki</a>
+                    <a href="shop.html">Магазин</a>
+                </div>
+            </div>
+            <div class="copyright">&copy; 2026 Vibe Rush. Not an official Minecraft product.</div>
+        </div>
+    </footer>
+
+    <script>
+        // БАЗА ДАННЫХ МАГАЗИНА
+        const products = [
+            // ПРИВИЛЕГИИ
+            {
+                cat: 'ranks',
+                title: 'Привилегия SUPPORT',
+                descr: 'Абсолютный контроль. /pv 1-3, /fly, смена префикса, /near, /repair. Включает возможности всех будущих ролей.',
+                price: 2499,
+                badge: 'TOP 1',
+                img: 'https://static.tildacdn.pub/tild6532-3835-4761-b961-356532663639/3dgifmaker77975.gif',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'ranks',
+                title: 'Привилегия ULTRA',
+                descr: 'Элитный статус. /pv 1-2, /fly, /near, /repair, /setwarp. Полная кастомизация префикса.',
+                price: 1499,
+                oldPrice: 1999,
+                img: 'https://static.tildacdn.pub/tild6137-3561-4236-b438-393539653666/Untitled_Project_-_2.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'ranks',
+                title: 'Привилегия LEGEND',
+                descr: 'Легендарный игрок. Эмодзи огня, /fly, /pv 1, /setwarp. Уникальный цвет ника.',
+                price: 799,
+                oldPrice: 1999,
+                img: 'https://static.tildacdn.pub/tild3230-3363-4633-a334-636361626163/Untitled_Project_-_2.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'ranks',
+                title: 'Привилегия DELUXE',
+                descr: 'Премиум набор. /fly, специальный префикс DELUXE и доступ к эксклюзивным эмодзи.',
+                price: 499,
+                oldPrice: 999,
+                img: 'https://static.tildacdn.pub/tild3635-3165-4137-b536-393364393461/Untitled_Project_-_2.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'ranks',
+                title: 'Привилегия PREMIUM',
+                descr: 'Улучшенный опыт. Доступ к полету /fly, префикс PREMIUM и яркая подсветка в чате.',
+                price: 299,
+                img: 'https://static.tildacdn.pub/tild3131-6562-4837-b964-376338643238/Untitled_Project_-_2.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'ranks',
+                title: 'Привилегия VIP',
+                descr: 'Стартовый набор. Доступ к /fly, золотой префикс VIP и приоритетный вход.',
+                price: 129,
+                oldPrice: 149,
+                img: 'https://static.tildacdn.pub/tild3131-6438-4932-a439-613461393836/Untitled_Project_-_2.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'ranks',
+                title: 'Привилегия FLY',
+                descr: 'Свобода полета. Дает доступ к команде /fly для неограниченного перемещения.',
+                price: 49,
+                badge: 'ХИТ',
+                img: 'https://static.tildacdn.pub/tild3464-3266-4863-a537-303661656130/Untitled_Project_-_2.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+
+            // МИРЫ
+            {
+                cat: 'worlds',
+                title: 'Затерянная Роща',
+                descr: 'Ваш личный приватный мир размером 50х50 блоков. Полная безопасность.',
+                price: 399,
+                oldPrice: 499,
+                badge: 'ХИТ',
+                img: 'https://static.tildacdn.pub/tild3632-6461-4936-b239-343964623831/photo_2026-01-31_17-.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'worlds',
+                title: 'Пламенные Равнины',
+                descr: 'Просторный личный мир 250х250 блоков. Места хватит для города.',
+                price: 899,
+                img: 'https://static.tildacdn.pub/tild3063-6162-4937-b234-313635393738/photo_2026-01-31_17-.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'worlds',
+                title: 'Внушительные Просторы',
+                descr: 'Колоссальный мир 500х500 блоков. Самая большая личная локация.',
+                price: 1399,
+                badge: 'ВЫГОДНО',
+                img: 'https://static.tildacdn.pub/tild6662-3865-4762-b539-643062363938/photo_2026-01-31_17-.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+
+            // КЕЙСЫ
+            {
+                cat: 'cases',
+                title: 'Донат Кейс',
+                descr: 'Шансы: 30% FLY, 25% VIP, 20% PREMIUM, 15% DELUXE, 10% LEGEND, 5% ULTRA.',
+                price: 59,
+                oldPrice: 79,
+                badge: 'ХИТ',
+                img: 'https://static.tildacdn.pub/tild3565-3232-4533-b835-646231363130/Untitled_Project_-_2.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'cases',
+                title: 'Кейс EDU',
+                descr: 'Шансы: 32% 50к EDU, 25% 75к EDU, 15% 150к EDU, 1% 500к EDU.',
+                price: 30,
+                img: 'https://static.tildacdn.pub/tild3565-3232-4533-b835-646231363130/Untitled_Project_-_2.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+
+            // ПРОПУСКИ (СЕЗОННОЕ)
+            {
+                cat: 'passes',
+                title: 'Battle Pass Premium',
+                descr: '50 уникальных наград: 3 донат кейса, 3 кирки (3х3), дротики и много валюты.',
+                price: 199,
+                badge: 'ВЫГОДНО',
+                img: 'https://static.tildacdn.pub/tild6132-6564-4636-b733-633864313036/photo_2026-01-31_16-.jpg',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+
+            // ПРЕДМЕТЫ
+            {
+                cat: 'items',
+                title: 'Вайбовая Кирка (3х3)',
+                descr: 'Инструмент для сверхэффективного гринда. Копает область 3х3.',
+                price: 29,
+                img: 'https://static.tildacdn.pub/tild6532-3739-4233-b338-306337326361/2025-06-02_17-33-09.png',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            },
+            {
+                cat: 'items',
+                title: 'Усыпляющий Дротик',
+                descr: 'Тактический предмет. Усыпляет цель на 5 секунд при попадании.',
+                price: 10,
+                img: 'https://static.tildacdn.pub/tild3561-6333-4637-b434-373664623764/2025-06-02_02-40-00.png',
+                url: 'https://www.donationalerts.com/r/dan4ik_edu_'
+            }
+        ];
+
+        function renderShop(category = 'all') {
+            const grid = document.getElementById('shopGrid');
+            grid.innerHTML = '';
+
+            const items = category === 'all' ? products : products.filter(p => p.cat === category);
+
+            items.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                // Расчет процента скидки
+                let discountHtml = '';
+                if(p.oldPrice) {
+                    const percent = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
+                    discountHtml = `<div class="discount-label">-${percent}%</div>`;
+                }
+
+                card.innerHTML = `
+                    ${discountHtml}
+                    ${p.badge ? `<div class="badge-label">${p.badge}</div>` : ''}
+                    <div class="product-img-wrp">
+                        <img src="${p.img}" alt="${p.title}" loading="lazy">
+                    </div>
+                    <h3 class="product-name">${p.title}</h3>
+                    <p class="product-text">${p.descr}</p>
+                    <div class="product-price-box">
+                        <div class="price-info">
+                            ${p.oldPrice ? `<span class="price-old">${p.oldPrice} ₽</span>` : ''}
+                            <span class="price-new">${p.price} ₽</span>
+                        </div>
+                        <a href="${p.url}" target="_blank" class="btn btn-primary buy-action">Купить</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterShop(cat) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderShop(cat);
+        }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => renderShop('all'));
+    </script>
+</body>
+</html>
