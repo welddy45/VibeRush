@@ -41,8 +41,6 @@
             color: #fff;
             margin-bottom: 15px;
             opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
         .rule-list {
             list-style: none;
@@ -57,7 +55,7 @@
             transition: 0.3s var(--ease);
             font-size: 0.95rem;
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.5;
         }
         .rule-item:hover {
             background: rgba(255, 255, 255, 0.07);
@@ -115,7 +113,7 @@
 
     <main class="container">
         <div class="text-content" id="rulesContainer">
-            <div class="rules-loader">Загрузка защищенного архива правил...</div>
+            <div class="rules-loader">Инициализация защищенного соединения с базой данных...</div>
         </div>
     </main>
 
@@ -145,6 +143,7 @@
             nav.classList.toggle('active');
         }
 
+        // Функция рендеринга списка правил
         function createRulesList(rulesArray) {
             const list = document.createElement('ul');
             list.className = 'rule-list';
@@ -153,6 +152,7 @@
                 const item = document.createElement('li');
                 item.className = 'rule-item';
                 
+                // Красивое выделение номера правила (например 1.1)
                 const numberMatch = ruleText.match(/^(\d+(\.\d+)*)/);
                 if (numberMatch) {
                     const num = numberMatch[0];
@@ -170,19 +170,22 @@
             const container = document.getElementById('rulesContainer');
             
             try {
+                // Обратите внимание: Fetch сработает только на сервере или GitHub Pages
                 const response = await fetch('rules.json');
                 if (!response.ok) throw new Error('Ошибка сети');
                 
                 const data = await response.json();
                 container.innerHTML = '';
 
+                // Вывод мета-информации
                 if(data.meta) {
                     const info = document.createElement('div');
-                    info.style.cssText = 'margin-bottom: 40px; padding: 15px; background: rgba(45,152,218,0.1); border-radius: 12px; font-size: 0.9rem; border-left: 3px solid var(--primary); color: #fff;';
-                    info.innerHTML = `Последнее обновление: ${data.meta.lastUpdated}`;
+                    info.style.cssText = 'margin-bottom: 40px; padding: 15px; background: rgba(45,152,218,0.1); border-radius: 12px; font-size: 0.9rem; border-left: 3px solid var(--primary);';
+                    info.innerHTML = `Версия: ${data.meta.version} | Последнее обновление: ${data.meta.lastUpdated}`;
                     container.appendChild(info);
                 }
 
+                // Основной цикл обработки категорий
                 data.categories.forEach((cat, idx) => {
                     const block = document.createElement('div');
                     block.className = 'rule-block';
@@ -192,10 +195,12 @@
                     title.innerText = cat.title;
                     block.appendChild(title);
 
+                    // Если есть обычные правила в категории
                     if (cat.rules) {
                         block.appendChild(createRulesList(cat.rules));
                     }
 
+                    // Если есть вложенные подкатегории (например, для Администрации)
                     if (cat.subcategories) {
                         cat.subcategories.forEach(sub => {
                             const subBlock = document.createElement('div');
@@ -216,9 +221,9 @@
             } catch (err) {
                 container.innerHTML = `
                     <div style="text-align:center; padding: 40px; background: rgba(255,71,87,0.1); border-radius: 20px; border: 1px solid var(--danger);">
-                        <h3 style="color: var(--danger); margin-bottom: 10px;">ОШИБКА ДОСТУПА</h3>
-                        <p style="color: #fff; opacity: 0.8;">CORS-блокировка. Сайт не может прочитать rules.json при локальном открытии.</p>
-                        <p style="margin-top: 20px; font-size: 0.9rem; color: var(--accent);">РЕШЕНИЕ: Выгрузите проект на GitHub Pages.</p>
+                        <h3 style="color: var(--danger); margin-bottom: 10px;">КРИТИЧЕСКАЯ ОШИБКА ДОСТУПА</h3>
+                        <p style="color: #fff; opacity: 0.8;">Браузер заблокировал загрузку локального файла правил из-за политики безопасности CORS.</p>
+                        <p style="margin-top: 20px; font-size: 0.9rem; color: var(--accent);">РЕШЕНИЕ: Загрузите файлы на GitHub Pages, и всё заработает идеально.</p>
                     </div>
                 `;
             }
