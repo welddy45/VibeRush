@@ -3,294 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Rush | Minecraft Server</title>
+    <title>Vibe Rush | Minecraft Server 2026</title>
+    <meta name="description" content="Vibe Rush - Топовый сервер Майнкрафт 1.20.1. Гриф, Выживание, Кланы, NFT Экономика. Залетай!">
+    <meta name="theme-color" content="#030305">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <style>
-        :root {
-            --bg: #050505;
-            --surface: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --primary: #2D98DA;
-            --accent: #FFDD2D;
-            --text: #ffffff;
-            --text-dim: #a0a0a0;
-            --glass: blur(15px);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
-
-        /* Анимации появления */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.15, 0.85, 0.33, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* Hero Section с фоном */
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(to bottom, rgba(5,5,5,0.7), var(--bg)), 
-                        url('https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/cb32f98d-99ff-445d-b7d5-ac6a3b473979/cb32f98d-99ff-445d-b7d5-ac6a3b473979-15707407.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            background: rgba(5, 5, 5, 0.5);
-            backdrop-filter: var(--glass);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo img { height: 40px; filter: drop-shadow(0 0 10px var(--primary)); }
-
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a { text-decoration: none; color: var(--text-dim); font-size: 0.85rem; font-weight: 600; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-links a:hover { color: var(--primary); }
-
-        .hero h1 { font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; }
-        .hero p { color: var(--text-dim); font-size: 1.2rem; max-width: 700px; margin-bottom: 40px; padding: 0 20px; }
-
-        /* Кнопки */
-        .hero-actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .btn { padding: 16px 35px; border-radius: 12px; text-decoration: none; font-weight: 700; transition: 0.4s; display: flex; align-items: center; gap: 10px; }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 30px rgba(45, 152, 218, 0.3); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(45, 152, 218, 0.5); }
-        
-        .ip-copy { background: var(--surface); border: 1px solid var(--border); color: white; cursor: pointer; backdrop-filter: var(--glass); }
-        .ip-copy:hover { border-color: var(--accent); background: rgba(255, 255, 45, 0.05); }
-
-        /* Секция описания */
-        .about-text { padding: 100px 15%; text-align: center; background: var(--bg); }
-        .about-text h2 { font-size: 2.5rem; margin-bottom: 30px; color: var(--accent); }
-        .about-text p { font-size: 1.1rem; color: var(--text-dim); line-height: 1.8; }
-
-        /* Bento Grid */
-        .features { padding: 50px 8%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; transition: 0.4s; }
-        .feature-card:hover { border-color: var(--primary); background: rgba(255,255,255,0.05); transform: translateY(-5px); }
-        .feature-card i { color: var(--primary); margin-bottom: 20px; width: 32px; height: 32px; }
-        .feature-card h3 { margin-bottom: 15px; font-size: 1.5rem; }
-        .feature-card p { color: var(--text-dim); font-size: 0.95rem; }
-        .card-wide { grid-column: span 2; }
-
-        /* NFT Секция */
-        .nft-section { padding: 100px 8%; }
-        .section-title { text-align: center; margin-bottom: 60px; }
-        .section-title h2 { font-size: 3rem; font-weight: 800; }
-        
-        .nft-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .nft-card { background: #111; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); transition: 0.3s; }
-        .nft-card:hover { border-color: var(--accent); }
-        .nft-img { width: 100%; aspect-ratio: 1; object-fit: cover; }
-        .nft-info { padding: 25px; }
-        .nft-info h4 { font-size: 1.3rem; margin-bottom: 10px; }
-        .nft-stats { font-size: 0.85rem; color: var(--text-dim); }
-        .nft-stats div { margin-bottom: 5px; display: flex; justify-content: space-between; }
-        .nft-stats span { color: var(--accent); font-weight: 600; }
-
-        /* Соцсети */
-        .socials { padding: 100px 8%; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .soc-btn { padding: 20px 40px; border-radius: 15px; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 15px; font-size: 1.1rem; transition: 0.3s; }
-        .tg { background: #2D98DA; color: white; }
-        .ds { background: #5865F2; color: white; }
-        .soc-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
-
-        footer { padding: 60px 8%; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--text-dim); font-size: 0.9rem; }
-
-        #copy-toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: var(--accent); color: #000; padding: 12px 30px; border-radius: 100px;
-            font-weight: 800; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2000;
-        }
-        #copy-toast.show { transform: translateX(-50%) translateY(0); }
-
-        @media (max-width: 1024px) {
-            .features { grid-template-columns: 1fr; }
-            .card-wide { grid-column: span 1; }
-            .nav-links { display: none; }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/63398923-e702-4556-9e03-8d52243a3297/63398923-e702-4556-9e03-8d52243a3297-13789880.png">
 </head>
 <body>
 
-    <nav>
-        <a href="index.html" class="logo">
-            <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/c627bfd3-f6de-41b4-939a-6abc2188184f/c627bfd3-f6de-41b4-939a-6abc2188184f-13792320.png" alt="Vibe Rush">
-        </a>
-        <div class="nav-links">
-            <a href="index.html" style="color: var(--primary);">Главная</a>
-            <a href="pokupka.html">Магазин</a>
-            <a href="pravila.html">Правила</a>
-            <a href="wiki.html">Wiki</a>
-            <a href="https://t.me/viberushmc">Telegram</a>
-        </div>
-    </nav>
+    <!-- Header -->
+    <header>
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">
+                <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/c627bfd3-f6de-41b4-939a-6abc2188184f/c627bfd3-f6de-41b4-939a-6abc2188184f-13792320.png" alt="Vibe Rush">
+                <span>VIBE RUSH</span>
+            </a>
+            
+            <nav class="nav-links" id="navLinks">
+                <a href="#" class="nav-link active">Главная</a>
+                <a href="https://viberush.tilda.ws" class="nav-link">Магазин</a>
+                <a href="pravila.html" class="nav-link">Правила</a>
+                <a href="wiki.html" class="nav-link">Wiki</a>
+                <a href="https://discord.gg/JB368EmZmq" target="_blank" class="nav-link">Discord</a>
+            </nav>
 
-    <section class="hero">
-        <h1 class="reveal">VIBE RUSH</h1>
-        <p class="reveal">Гриф / Выживание / Страны. Уникальный мир с кастомными системами и живой экономикой.</p>
-        
-        <div class="hero-actions reveal">
-            <a href="pokupka.html" class="btn btn-primary">В МАГАЗИН</a>
-            <div class="btn ip-copy" onclick="copyIP('viberush.20tps.ru')">
-                <i data-lucide="copy"></i>
-                <span>viberush.20tps.ru</span>
+            <div class="burger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
+    </header>
 
-        <div class="reveal" style="margin-top: 40px; display: flex; align-items: center; gap: 15px; color: var(--text-dim);">
-            <div style="width: 10px; height: 10px; background: #44ff44; border-radius: 50%; box-shadow: 0 0 15px #44ff44;"></div>
-            <span id="player-count">Загрузка онлайна...</span>
-            <span>•</span>
-            <span>Версия 1.20.1</span>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="status-badge" id="serverStatus">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Загрузка статуса...</span>
+            </div>
+
+            <h1>VIBE RUSH</h1>
+            <p>Уникальная экономика, NFT предметы, отсутствие приватов и полная свобода действий на версии 1.20.1</p>
+
+            <!-- IP Box -->
+            <div class="ip-wrapper" id="ipBox" onclick="copyIP()">
+                <div class="ip-text">viberush.20tps.ru</div>
+                <div class="copy-btn" id="copyIconBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </div>
+            </div>
+
+            <!-- Hero Buttons -->
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;">
+                <a href="https://viberush.tilda.ws" class="btn btn-gold">Магазин Предметов</a>
+                <a href="https://discord.gg/JB368EmZmq" target="_blank" class="btn btn-discord">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                        <path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.2 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.53.31-1.07.57-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.85 2.12-1.89 2.12z"/>
+                    </svg>
+                    Discord
+                </a>
+            </div>
         </div>
     </section>
 
-    <section class="about-text reveal">
-        <h2>О ПРОЕКТЕ</h2>
-        <p>Уникальный мир Vibe Rush — это не просто выживание. Мы создали экосистему с кастомными плагинами, эпическими боссами, продуманной экономикой и маркетом предметов. Тебя ждут уникальные артефакты, бесплатный донат за активность, квесты, боевой пропуск, клановые войны и альянсы. Здесь каждый найдет свой вайб.</p>
-    </section>
-
-    <section class="features">
-        <div class="feature-card card-wide reveal">
-            <i data-lucide="swords"></i>
-            <h3>Гриф и Выживание</h3>
-            <p>Никаких ограничений для истинных воинов. Создавай кланы, захватывай территории и доминируй на сервере с помощью кастомного оружия.</p>
+    <!-- Features -->
+    <section class="section container">
+        <div class="section-header">
+            <h2 class="section-title">ПОЧЕМУ VIBE RUSH?</h2>
+            <p class="section-subtitle">Мы создали сервер, на котором хочется играть вечно</p>
         </div>
-        <div class="feature-card reveal">
-            <i data-lucide="coins"></i>
-            <h3>Экономика</h3>
-            <p>Зарабатывай EDU COIN через майнинг, торговлю или выполнение квестов. Стань самым богатым игроком сезона.</p>
-        </div>
-        <div class="feature-card reveal">
-            <i data-lucide="zap"></i>
-            <h3>Battle Pass</h3>
-            <p>Проходи испытания и забирай эксклюзивные награды. Каждый сезон — новые предметы и возможности.</p>
-        </div>
-        <div class="feature-card card-wide reveal">
-            <i data-lucide="shield-check"></i>
-            <h3>Кастомные системы</h3>
-            <p>От уникальной рыбалки до системы NFT и майнинг-ферм. Мы переосмыслили привычный майнкрафт.</p>
+        
+        <div class="grid-3">
+            <div class="feature-card">
+                <div class="feature-icon">⚔️</div>
+                <h3>Без Приватов</h3>
+                <p>Забудь про /rg claim. Только реальная сила, клановые войны и защита территорий блоками. Хардкор и адреналин.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💎</div>
+                <h3>NFT Экономика</h3>
+                <p>Революционная система. Покупай NFT предметы за игровую валюту и получай пассивный доход даже когда ты оффлайн.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Кланы и Альянсы</h3>
+                <p>Создай свою империю. Объединяйся с друзьями, сражайся за территории и станьте сильнейшим кланом на сервере!</p>
+            </div>
         </div>
     </section>
 
-    <section class="nft-section reveal">
-        <div class="section-title">
-            <h2>NFT VIBE RUSH</h2>
-            <p style="color: var(--text-dim);">Инвестируй в будущее и получай пассивный доход в EDU COIN</p>
+    <!-- Gallery -->
+    <section class="section" style="background: #050507;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">ГАЛЕРЕЯ</h2>
+                <p class="section-subtitle">Нажми на изображение, чтобы открыть</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openLightbox(this)"><img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/99f26521-c759-4388-89e1-4681009e74a1/99f26521-c759-4388-89e1-4681009e74a1-15707418.png" alt="Game 1"></div>
+                <div class="gallery-item" onclick="openLightbox(this)"><img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/d85a1fc8-0d1e-4bd9-bb20-c8696bf3f1d8/d85a1fc8-0d1e-4bd9-bb20-c8696bf3f1d8-13801975.png" alt="Game 2"></div>
+                <div class="gallery-item" onclick="openLightbox(this)"><img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/fb1118c0-1521-476e-a6b3-b289b5cb3a6a/fb1118c0-1521-476e-a6b3-b289b5cb3a6a-13803919.png" alt="Game 3"></div>
+                <div class="gallery-item" onclick="openLightbox(this)"><img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/46572086-526e-4fe2-a350-bc6857e54b2e/46572086-526e-4fe2-a350-bc6857e54b2e-13801995.png" alt="Game 4"></div>
+            </div>
         </div>
-        <div class="nft-grid">
+    </section>
+
+    <!-- NFT Collection -->
+    <section class="section container">
+        <div class="section-header">
+            <h2 class="section-title">NFT КОЛЛЕКЦИЯ</h2>
+            <p class="section-subtitle">Инвестируй EDU COIN и зарабатывай</p>
+        </div>
+
+        <div class="grid-3">
             <div class="nft-card">
-                <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/25da877d-18d7-4313-887a-8dbc2dc634fb/25da877d-18d7-4313-887a-8dbc2dc634fb-12838128.png" class="nft-img">
-                <div class="nft-info">
+                <div class="nft-image">
+                    <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/25da877d-18d7-4313-887a-8dbc2dc634fb/25da877d-18d7-4313-887a-8dbc2dc634fb-12838128.png" alt="Gold">
+                </div>
+                <div class="nft-content">
                     <h4>NFT Gold</h4>
                     <div class="nft-stats">
-                        <div>Доход: <span>90 EDU/час</span></div>
-                        <div>Лимит: <span>100 на игрока</span></div>
-                        <div style="margin-top:10px; color: #fff;">Цена: 50.000 EDU</div>
+                        <div class="stat-row"><span>Доход:</span> <span>90 EDU/час</span></div>
+                        <div class="stat-row"><span>Лимит:</span> <span>100 шт.</span></div>
+                        <div class="stat-row"><span>Всего:</span> <span>1000</span></div>
                     </div>
+                    <div class="nft-price">50.000 EDU</div>
                 </div>
             </div>
+
             <div class="nft-card">
-                <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/32326504-842e-48e8-9173-4e5d73561174/32326504-842e-48e8-9173-4e5d73561174-12838155.png" class="nft-img">
-                <div class="nft-info">
+                <div class="nft-image">
+                    <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/32326504-842e-48e8-9173-4e5d73561174/32326504-842e-48e8-9173-4e5d73561174-12838155.png" alt="Diamond">
+                </div>
+                <div class="nft-content">
                     <h4>NFT Diamond</h4>
                     <div class="nft-stats">
-                        <div>Доход: <span>417 EDU/час</span></div>
-                        <div>Лимит: <span>10 на игрока</span></div>
-                        <div style="margin-top:10px; color: #fff;">Цена: 100.000 EDU</div>
+                        <div class="stat-row"><span>Доход:</span> <span>417 EDU/час</span></div>
+                        <div class="stat-row"><span>Лимит:</span> <span>10 шт.</span></div>
+                        <div class="stat-row"><span>Всего:</span> <span>100</span></div>
                     </div>
+                    <div class="nft-price">100.000 EDU</div>
                 </div>
             </div>
-            <div class="nft-card">
-                <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/ca531a22-dc61-48a4-a68f-734b3289b570/ca531a22-dc61-48a4-a68f-734b3289b570-12838190.gif" class="nft-img">
-                <div class="nft-info">
-                    <h4>NFT EDUCOIN</h4>
+
+            <div class="nft-card premium">
+                <div class="nft-image">
+                    <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/ca531a22-dc61-48a4-a68f-734b3289b570/ca531a22-dc61-48a4-a68f-734b3289b570-12838190.gif" alt="EDUCOIN">
+                </div>
+                <div class="nft-content">
+                    <h4 style="color: var(--gold);">NFT EDUCOIN</h4>
                     <div class="nft-stats">
-                        <div>Доход: <span>10.000 EDU/час</span></div>
-                        <div>Лимит: <span>1 на игрока</span></div>
-                        <div style="margin-top:10px; color: #fff;">Цена: 2.500.000 EDU</div>
+                        <div class="stat-row"><span>Доход:</span> <span style="color: var(--gold);">10k EDU/час</span></div>
+                        <div class="stat-row"><span>Лимит:</span> <span>1 шт.</span></div>
+                        <div class="stat-row"><span>Всего:</span> <span>3</span></div>
                     </div>
+                    <div class="nft-price">2.500.000 EDU</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="socials reveal">
-        <a href="https://t.me/viberushmc" class="soc-btn tg">
-            <i data-lucide="send"></i> TELEGRAM КАНАЛ
-        </a>
-        <a href="https://discord.gg/JB368EmZmq" class="soc-btn ds">
-            <i data-lucide="message-square"></i> DISCORD СЕРВЕР
-        </a>
+    <!-- CTA Section -->
+    <section class="container" style="padding-bottom: 80px;">
+        <div class="cta-box">
+            <div class="cta-content">
+                <h2>ГОТОВ НАЧАТЬ?</h2>
+                <p>Присоединяйся к нашему сообществу в Telegram и Discord</p>
+                <div class="cta-buttons">
+                    <a href="https://t.me/viberushmc" target="_blank" class="btn btn-telegram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        Telegram
+                    </a>
+                    <a href="https://discord.gg/JB368EmZmq" target="_blank" class="btn btn-discord">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                            <path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.2 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.53.31-1.07.57-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.85 2.12-1.89 2.12z"/>
+                        </svg>
+                        Discord
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
 
+    <!-- Footer -->
     <footer>
-        <div>Vibe Rush 2026® — Все права защищены</div>
-        <div style="display: flex; gap: 20px;">
-            <a href="privacy-policy.html" style="color: inherit; text-decoration: none;">Политика конфиденциальности</a>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <img src="https://90f1661d-2ff4-4f29-b07c-0e47453ca691.selstorage.ru/site931690/b8ccdd8f-e1a5-42bb-8ffb-72065970d99d/b8ccdd8f-e1a5-42bb-8ffb-72065970d99d-13792321.png" alt="Logo">
+                    <span>VIBE RUSH</span>
+                </div>
+                <div class="footer-links">
+                    <a href="pravila.html">Правила</a>
+                    <a href="privacy-policy.html">Политика конфиденциальности</a>
+                    <a href="wiki.html">Wiki</a>
+                    <a href="https://viberush.tilda.ws">Магазин</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Vibe Rush Server. Not affiliated with Mojang AB.
+            </div>
         </div>
     </footer>
 
-    <div id="copy-toast">IP СКОПИРОВАН!</div>
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" onclick="closeLightbox()">&times;</div>
+        <img id="lightbox-img" src="" alt="Full View">
+    </div>
 
     <script>
-        lucide.createIcons();
+        const SERVER_IP = "viberush.20tps.ru";
 
-        // Анимация появления при скролле
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // Копирование IP
-        function copyIP(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('copy-toast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2000);
-            });
-        }
-
-        // Статус сервера
-        async function updateStatus() {
+        async function fetchServerStatus() {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            
             try {
-                const response = await fetch('https://api.mcsrvstat.us/2/viberush.20tps.ru');
+                const response = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
                 const data = await response.json();
-                const el = document.getElementById('player-count');
-                if(data.online) {
-                    el.innerText = `Игроков онлайн: ${data.players.online}`;
+                
+                if (data.online) {
+                    dot.classList.add('online');
+                    text.innerHTML = `Онлайн: <span style="color: #fff; font-weight: 700;">${data.players.online}</span> игроков`;
                 } else {
-                    el.innerText = `Сервер оффлайн`;
+                    dot.classList.remove('online');
+                    text.innerText = "Сервер Оффлайн";
                 }
-            } catch (e) { el.innerText = `viberush.20tps.ru`; }
+            } catch (error) {
+                console.error("Status Error:", error);
+                text.innerText = "Статус неизвестен";
+            }
         }
-        updateStatus();
-        setInterval(updateStatus, 30000);
+
+        function copyIP() {
+            navigator.clipboard.writeText(SERVER_IP).then(() => {
+                const box = document.getElementById("ipBox");
+                const btn = document.getElementById("copyIconBtn");
+                
+                // Visual Feedback
+                box.classList.add("copied");
+                // Change icon to checkmark
+                btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                
+                if (navigator.vibrate) navigator.vibrate(50);
+
+                setTimeout(() => {
+                    box.classList.remove("copied");
+                    // Revert icon
+                    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+                }, 2000);
+            });
+        }
+
+        // Lightbox Logic
+        function openLightbox(element) {
+            const img = element.querySelector('img');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            lightboxImg.src = img.src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox on click outside image
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            nav.classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchServerStatus);
     </script>
 </body>
 </html>
